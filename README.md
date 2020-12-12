@@ -1,17 +1,17 @@
-# ME495 (Embedded Systems for Robotics) Homework 04:
+# ME495 (Embedded Systems for Robotics) Homework 04
 
 Author: Christopher Tsai
 
-## Overview:
+## Overview
 
 This package contains code for various mapping and navigation tasks on the TurtleBot3 Burger, such as manual navigation SLAM for map generation, localization and navigation from a pre-loaded map, SLAM and path planning using a pose goal, and autonomous frontier-based exploration.
 
-## Dependencies: 
+## Dependencies
 
 - turtlebot3
 - slam_toolbox
 
-## Nodes and Launchfiles:
+## Nodes and Launchfiles
 
 - `start_slam.launch`: used to map the environment manually by controlling the turtlebot using arrow keys through the `turtlebot3_teleop_key` node.
 - `nav_stack.launch`: used to navigate a pre-mapped environment using path planning and pose goals.
@@ -19,11 +19,11 @@ This package contains code for various mapping and navigation tasks on the Turtl
 - `exploration.launch`: used to conduct autonomous exploration of an environment using a frontier-based approach and SLAM.
 - `exploration` node: node that carries out [frontier exploration algorithm](#frontier-exploration-algorithm).
 
-## Configuration Options:
+## Configuration Options
 
 Code can be run in Gazebo instead of in real life. To do this, add the option `launch_gazebo:=true` to any of the launchfiles.
 
-## Usage Instructions:
+## Usage Instructions
 
 1. Create a new workspace and clone the demonstration code.
     ```
@@ -55,7 +55,7 @@ Code can be run in Gazebo instead of in real life. To do this, add the option `l
     roslaunch turtlebot3_bringup turtlebot3_robot.launch
     ```
 
-### Time Synchronization Issues:
+### Time Synchronization Issues
 
 I experienced some time synchronization issues when running the code on a real-life turtlebot. The time on the turtlebot and the time on my computer were not the same. A couple fixes for this are:
 - When SSH'd into the turtlebot, run:
@@ -68,14 +68,14 @@ I experienced some time synchronization issues when running the code on a real-l
     ```
   Reboot and check that timedatectl returns `System clock synchronized: yes`.
 
-## Demos:
+## Demos
 
 - [`start_slam.launch`](https://youtu.be/UYFy0_s_GdQ)
 - [`nav_stack.launch`](https://youtu.be/OLLRxEmMZLc)
 - [`slam_stack.launch`](https://youtu.be/qAmRSt5EXVg) 
 - [`exploration.launch`](https://youtu.be/KCE35dVK1f8) 
 
-## Frontier Exploration Algorithm:
+## Frontier Exploration Algorithm
 
 1. Get map data from `/map` topic. This data contains a row-major 1D list of map values from `slam_toolbox`, where a value of 100 corresponds to an occupied cell, a value of 0 corresponds to an unoccupied cell, and a value of -1 corresponds to an unknown cell. We are trying to find the "frontier" cells that lie in between unoccupied and unknown cells.
 2. Transform 1D list of map values into a 2D np.ndarray.

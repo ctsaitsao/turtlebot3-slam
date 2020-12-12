@@ -37,7 +37,7 @@ class Exploration:
 
             Args:
                I (np.ndarray): input image
-               operator (str): type of kernel to convolute image with
+               operator (str): type of kernel to convolve image with
         """
         mag = np.zeros((I.shape[0], I.shape[1]))
         theta = np.zeros((I.shape[0], I.shape[1]))

@@ -1,0 +1,11 @@
+<launch>
+  <arg name="launch_gazebo" default="false" doc="Option to launch turtlebot in Gazebo instead of real life."/>
+
+  <include file="$(find turtlebot3_gazebo)/launch/turtlebot3_house.launch" if="$(arg launch_gazebo)"/>
+
+  <include file="$(find turtlebot3_navigation)/launch/turtlebot3_navigation.launch">
+    <arg name="model" value="burger"/>
+    <arg name="map_file" value="$(find homework4)/maps/gazebo_house2.yaml" if="$(arg launch_gazebo)"/>
+    <arg name="map_file" value="$(find homework4)/maps/irl_house.yaml" unless="$(arg launch_gazebo)"/>
+  </include>
+</launch>

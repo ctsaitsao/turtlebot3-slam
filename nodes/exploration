@@ -1,22 +1,11 @@
 #!/usr/bin/env python
+
 """
-Node causes turtlebot3 to explore a space autonomously, in conjunction with slam_toolbox.
+Node causes turtlebot3 to explore a space autonomously, in conjunction with
+slam_toolbox.
 
-SERVICES:
-    reset (arm_move/Reset): resets position of realsense box and sends robot
-                            to Home position
-
-    step (arm_move/Step): plans and moves robot to specified pose, stores
-                        successful waypoints, and returns error code of
-                        success/failure of plan
-
-    follow (arm_move/Follow): moves robot through saved waypoints, with
-                            option to loop
-
-    get_pose (arm_move/GetPose): gets current end-effector pose of robot
-
-PARAMETERS:
-    /waypoints: poses that robot follows, includes gripper status data
+ACTIONS:
+    move_base (move_base_msgs/MoveBase): plans and navigates robot to goal.
 """
 
 import rospy
@@ -24,15 +13,13 @@ import actionlib
 import tf2_ros
 import numpy as np
 import sys
-# import cv2
 import random
+import math
 from move_base_msgs.msg import MoveBaseAction, MoveBaseGoal
 from nav_msgs.msg import OccupancyGrid
 from geometry_msgs.msg import Transform, TransformStamped, Vector3, Quaternion
 
-np.set_printoptions(threshold=sys.maxsize)
-
-import math
+np.set_printoptions(threshold=sys.maxsize)  # for debugging
 
 
 class Exploration:
@@ -46,6 +33,12 @@ class Exploration:
         self.__tf_listener = tf2_ros.TransformListener(self.__tf_buffer)
 
     def image_gradient(self, I, operator='Sobel'):
+        """ Outputs an image's gradient based on one of three operators.
+
+            Args:
+               I (np.ndarray): input image
+               operator (str): type of kernel to convolute image with
+        """
         mag = np.zeros((I.shape[0], I.shape[1]))
         theta = np.zeros((I.shape[0], I.shape[1]))
 
@@ -116,26 +109,15 @@ class Exploration:
 
             self.__tf_broadcaster.sendTransform(Tml_stamped)
 
-            # Replace unknown values of -1 with 255.
-            # Thus, we will only look for image gradients that are > 200
-            # (if neg, means unoccupied, 200 -> ocupied, 100):
+            # Replace unknown values of -1 with 100 and occupied values of 100
+            # with 50, to only select high gradients from unknown to occupied:
             map_2d_ = np.where(map_2d == 100, 50, map_2d)
             map_2d_ = np.where(map_2d_ == -1, 100, map_2d_)
 
             # Image gradient:
-            laplacian, _ = self.image_gradient(map_2d_, operator='Roberts_Cross')
+            laplacian, _ = self.image_gradient(map_2d_,
+                                               operator='Roberts_Cross')
             laplacian *= 255 / np.amax(laplacian)
-            # laplacian = laplacian.astype(np.uint8)
-            # laplacian = cv2.Laplacian(map_2d_, cv2.CV_64F)
-            # map_2d_ = map_2d_.astype(np.uint8)
-            # canny = cv2.Canny(map_2d_, 250, 255)  # returns binary mask  # NOTE: canny is not a good choice bc it detects even small edges
-
-            # print(laplacian)
-
-            # cv2.imshow('laplacian', laplacian)
-            # # cv2.imshow('canny', canny)
-            # cv2.waitKey(0)
-            # cv2.destroyAllWindows()
 
             # Global costmap data:
             global_costmap = rospy.wait_for_message(
@@ -161,11 +143,6 @@ class Exploration:
                 for x in range(laplacian.shape[1]):
                     if laplacian[y, x] > 150 and global_2d[y, x] < 50:
                         possible_poses.append((x, map_height - y))
-
-            # for y in range(canny.shape[0]):
-            #     for x in range(canny.shape[1]):
-            #         if canny[y, x] == 255:
-            #             possible_poses.append((x, map_height - y))
 
             map_x, map_y = random.choice(possible_poses)
 
@@ -198,8 +175,6 @@ class Exploration:
                     tf2_ros.ConnectivityException,
                     tf2_ros.ExtrapolationException):
                 continue
-
-            print("goal =", Tmg.transform.translation.x, Tmg.transform.translation.y)
 
             goal = MoveBaseGoal()
             goal.target_pose.header.frame_id = "map"  # has to be in map frame

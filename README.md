@@ -1,4 +1,4 @@
-# ME495 (Embedded Systems for Robotics) Homework 04
+# ME495 (Embedded Systems for Robotics) Homework 4
 
 Author: Christopher Tsai
 

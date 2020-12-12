@@ -70,10 +70,10 @@ I experienced some time synchronization issues when running the code on a real-l
 
 ## Demos:
 
-- `start_slam.launch`:
-- `nav_stack.launch`:
-- `slam_stack.launch`: 
-- `exploration.launch`: 
+- [`start_slam.launch`](https://youtu.be/UYFy0_s_GdQ)
+- [`nav_stack.launch`](https://youtu.be/OLLRxEmMZLc)
+- [`slam_stack.launch`](https://youtu.be/qAmRSt5EXVg) 
+- [`exploration.launch`](https://youtu.be/KCE35dVK1f8) 
 
 ## Frontier Exploration Algorithm:
 

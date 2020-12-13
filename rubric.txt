@@ -1,0 +1,14 @@
+12/18
+README.md -3
+git
+catkin_lint
+start_slam.launch
+map.yaml
+map.pgm
+nav_stack.launch
+screencast -1
+slam_stack.launch
+screencast -1
+exploration node and launchfile
+expl.pgm and expl.yaml
+README.md description of exploration -1

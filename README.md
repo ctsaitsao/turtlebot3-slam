@@ -74,7 +74,7 @@ I experienced some time synchronization issues when running the code on a real-l
 - [`start_slam.launch`](https://youtu.be/UYFy0_s_GdQ)
 - [`nav_stack.launch`](https://youtu.be/OLLRxEmMZLc)
 - [`slam_stack.launch`](https://youtu.be/qAmRSt5EXVg) 
-- [`exploration.launch`](https://youtu.be/8vcMONQc81I)
+- [`exploration.launch` (real life)](https://youtu.be/8vcMONQc81I)
 - [`exploration.launch` (Gazebo)](https://youtu.be/KCE35dVK1f8) 
 
 ## Frontier Exploration Algorithm

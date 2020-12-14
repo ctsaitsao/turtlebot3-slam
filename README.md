@@ -67,6 +67,7 @@ I experienced some time synchronization issues when running the code on a real-l
     timedatectl set-ntp true
     ```
   Reboot and check that timedatectl returns `System clock synchronized: yes`.
+- If even that doesn't work, then the TurtleBot and laptop need to be connected to the same wifi. Do this by adding wifi information to the `/etc/netplan/10-network.yaml` file in the TurtleBot's Raspberry Pi. If after this pinging `turtlebot.local` doesn't work, connect the RasPi to a screen and keyboard and use the `ip addr` command to acquire the TurtleBot's local IP address. Then, replace `turtlebot.local` with the IP address when SSH'ing (`ssh ubuntu@[IP address]`) and in the ROS_HOSTNAME environment variable in the TurtleBot's `.bashrc` file.
 
 ## Demos
 

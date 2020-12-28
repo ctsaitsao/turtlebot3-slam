@@ -1,6 +1,6 @@
-# ME495 (Embedded Systems for Robotics) Homework 4
+# TurtleBot3 SLAM ROS Package
 
-Author: Christopher Tsai
+Fourth assignment for ME 495: Embedded Systems in Robotics, Northwestern University, Fall 2020.
 
 ## Overview
 
